@@ -1,5 +1,6 @@
 import { type ChangeEvent, type FormEvent, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Field } from '../components/Field';
 import { ApiError } from '../api/client';
 import { useAuth } from '../auth/auth';
 
@@ -63,40 +64,30 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
         )}
 
         {isRegister && (
-          <label className="field">
-            <span>Nombre</span>
-            <input
-              value={form.name}
-              onChange={set('name')}
-              autoComplete="name"
-              aria-invalid={!!fields.name}
-            />
-            {fields.name && <small className="field__error">{fields.name}</small>}
-          </label>
+          <Field label="Nombre" error={fields.name}>
+            {(p) => <input {...p} value={form.name} onChange={set('name')} autoComplete="name" />}
+          </Field>
         )}
-        <label className="field">
-          <span>Email</span>
-          <input
-            type="email"
-            value={form.email}
-            onChange={set('email')}
-            autoComplete="email"
-            aria-invalid={!!fields.email}
-          />
-          {fields.email && <small className="field__error">{fields.email}</small>}
-        </label>
-        <label className="field">
-          <span>Contraseña</span>
-          <input
-            type="password"
-            value={form.password}
-            onChange={set('password')}
-            autoComplete={isRegister ? 'new-password' : 'current-password'}
-            aria-invalid={!!fields.password}
-          />
-          {fields.password && <small className="field__error">{fields.password}</small>}
-          {isRegister && !fields.password && <small className="muted">Mínimo 8 caracteres.</small>}
-        </label>
+        <Field label="Email" error={fields.email}>
+          {(p) => (
+            <input {...p} type="email" value={form.email} onChange={set('email')} autoComplete="email" />
+          )}
+        </Field>
+        <Field
+          label="Contraseña"
+          error={fields.password}
+          hint={isRegister ? 'Mínimo 8 caracteres.' : undefined}
+        >
+          {(p) => (
+            <input
+              {...p}
+              type="password"
+              value={form.password}
+              onChange={set('password')}
+              autoComplete={isRegister ? 'new-password' : 'current-password'}
+            />
+          )}
+        </Field>
 
         <button type="submit" className="btn btn--primary btn--block" disabled={submitting}>
           {submitting ? 'Un momento…' : isRegister ? 'Crear cuenta' : 'Entrar'}
