@@ -1,0 +1,17 @@
+# Despliegue en Render (https://render.com) con un clic: New → Blueprint → elegir este repositorio.
+# Un solo servicio: Express sirve la API en /api y el frontend compilado en el resto de rutas.
+services:
+  - type: web
+    name: pulso-reservas
+    runtime: node
+    plan: free
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true

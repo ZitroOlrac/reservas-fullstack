@@ -1,0 +1,24 @@
+{
+  "name": "reservas-fullstack",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reservas de clases de gimnasio: API en Node.js + Express + SQL y frontend en React.",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,magenta \"npm run dev -w server\" \"npm run dev -w client\"",
+    "build": "npm run build -w client",
+    "start": "npm run start -w server",
+    "test": "npm test -w server && npm test -w client",
+    "typecheck": "npm run typecheck -w server && npm run typecheck -w client"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6",
+    "prettier": "^3.9.10"
+  }
+}
