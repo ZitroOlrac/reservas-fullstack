@@ -545,7 +545,8 @@ select {
   display: grid;
   gap: 0.3rem;
 }
-.field > span {
+.field > span,
+.field > label {
   font-weight: 600;
   font-size: 0.875rem;
 }

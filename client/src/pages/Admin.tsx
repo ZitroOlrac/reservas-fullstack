@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { type ChangeEvent, type FormEvent, useState } from 'react';
 import { ApiError, api } from '../api/client';
 import type { ClassType, GymClass } from '../api/types';
+import { Field } from '../components/Field';
 import { ErrorState, Loading } from '../components/states';
 import { CLASS_TYPES } from '../lib/classTypes';
 import { addDays, dayKey, dayLabel, formatTime, madridLocalToIso, today } from '../lib/dates';
@@ -79,16 +80,11 @@ export function Admin() {
               {create.error.message}
             </p>
           )}
-          <label className="field">
-            <span>Nombre</span>
-            <input
-              value={form.title}
-              onChange={set('title')}
-              placeholder="Ej.: HIIT al mediodía"
-              aria-invalid={!!fields.title}
-            />
-            {fields.title && <small className="field__error">{fields.title}</small>}
-          </label>
+          <Field label="Nombre" error={fields.title}>
+            {(p) => (
+              <input {...p} value={form.title} onChange={set('title')} placeholder="Ej.: HIIT al mediodía" />
+            )}
+          </Field>
           <div className="field-row">
             <label className="field">
               <span>Tipo</span>
@@ -100,58 +96,42 @@ export function Admin() {
                 ))}
               </select>
             </label>
-            <label className="field">
-              <span>Sala</span>
-              <input
-                value={form.room}
-                onChange={set('room')}
-                placeholder="Sala 1"
-                aria-invalid={!!fields.room}
-              />
-              {fields.room && <small className="field__error">{fields.room}</small>}
-            </label>
+            <Field label="Sala" error={fields.room}>
+              {(p) => <input {...p} value={form.room} onChange={set('room')} placeholder="Sala 1" />}
+            </Field>
           </div>
-          <label className="field">
-            <span>Monitor/a</span>
-            <input value={form.instructor} onChange={set('instructor')} aria-invalid={!!fields.instructor} />
-            {fields.instructor && <small className="field__error">{fields.instructor}</small>}
-          </label>
-          <label className="field">
-            <span>Inicio (hora de Madrid)</span>
-            <input
-              type="datetime-local"
-              value={form.startsAt}
-              onChange={set('startsAt')}
-              aria-invalid={!!fields.startsAt}
-            />
-            {fields.startsAt && <small className="field__error">{fields.startsAt}</small>}
-          </label>
+          <Field label="Monitor/a" error={fields.instructor}>
+            {(p) => <input {...p} value={form.instructor} onChange={set('instructor')} />}
+          </Field>
+          <Field label="Inicio (hora de Madrid)" error={fields.startsAt}>
+            {(p) => <input {...p} type="datetime-local" value={form.startsAt} onChange={set('startsAt')} />}
+          </Field>
           <div className="field-row">
-            <label className="field">
-              <span>Duración (min)</span>
-              <input
-                type="number"
-                min={15}
-                max={180}
-                step={5}
-                value={form.durationMin}
-                onChange={set('durationMin')}
-                aria-invalid={!!fields.durationMin}
-              />
-              {fields.durationMin && <small className="field__error">{fields.durationMin}</small>}
-            </label>
-            <label className="field">
-              <span>Plazas</span>
-              <input
-                type="number"
-                min={1}
-                max={100}
-                value={form.capacity}
-                onChange={set('capacity')}
-                aria-invalid={!!fields.capacity}
-              />
-              {fields.capacity && <small className="field__error">{fields.capacity}</small>}
-            </label>
+            <Field label="Duración (min)" error={fields.durationMin}>
+              {(p) => (
+                <input
+                  {...p}
+                  type="number"
+                  min={15}
+                  max={180}
+                  step={5}
+                  value={form.durationMin}
+                  onChange={set('durationMin')}
+                />
+              )}
+            </Field>
+            <Field label="Plazas" error={fields.capacity}>
+              {(p) => (
+                <input
+                  {...p}
+                  type="number"
+                  min={1}
+                  max={100}
+                  value={form.capacity}
+                  onChange={set('capacity')}
+                />
+              )}
+            </Field>
           </div>
           <button type="submit" className="btn btn--primary btn--block" disabled={create.isPending}>
             {create.isPending ? 'Creando…' : 'Crear clase'}
